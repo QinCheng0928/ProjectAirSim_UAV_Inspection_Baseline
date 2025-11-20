@@ -34,3 +34,24 @@ ProjectAirSim_UAV_Inspection_Baseline/
 - **Unreal Engine 5 (5.2)**
 - **City Sample**
 - **ProjectAirSim (v0.1.1)**
+
+## Demo Video
+
+#### 1. Chase Camera
+
+[Chase Camera](./docs/videos/chase_camera_demo.mp4)
+
+#### 2. Front Camera
+
+[Front Camera](./docs/videos/front_camera_demo.mp4)
+
+#### 3. Depth Camera
+
+[Depth Camera](./docs/videos/depth_camera_demo.mp4)
+
+
+
+
+
+
+
