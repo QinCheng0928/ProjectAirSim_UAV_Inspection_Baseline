@@ -39,15 +39,15 @@ ProjectAirSim_UAV_Inspection_Baseline/
 
 #### 1. Chase Camera
 
-[Chase Camera](./docs/videos/chase_camera_demo.mp4)
+[Chase Camera](https://qincheng0928.github.io/ProjectAirSim_UAV_Inspection_Baseline//docs/videos/chase_camera_demo.mp4)
 
 #### 2. Front Camera
 
-[Front Camera](./docs/videos/front_camera_demo.mp4)
+[Front Camera](https://qincheng0928.github.io/ProjectAirSim_UAV_Inspection_Baseline//docs/videos/front_camera_demo.mp4)
 
 #### 3. Depth Camera
 
-[Depth Camera](./docs/videos/depth_camera_demo.mp4)
+[Depth Camera](https://qincheng0928.github.io/ProjectAirSim_UAV_Inspection_Baseline//docs/videos/depth_camera_demo.mp4)
 
 
 
