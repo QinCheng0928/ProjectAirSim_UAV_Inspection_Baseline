@@ -43,7 +43,7 @@ ProjectAirSim_UAV_Inspection_Baseline/
 
 #### 2. Front Camera
 
-[![Front Camera](docs/images/video_thumbnail.jpg)](https://qincheng0928.github.io/ProjectAirSim_UAV_Inspection_Baseline//docs/videos/front_camera_demo.mp4)
+[![Front Camera](docs/images/front_camera_demo.png)](https://qincheng0928.github.io/ProjectAirSim_UAV_Inspection_Baseline//docs/videos/front_camera_demo.mp4)
 
 #### 3. Depth Camera
 
