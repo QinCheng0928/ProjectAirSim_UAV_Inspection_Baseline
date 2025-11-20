@@ -37,3 +37,28 @@ ProjectAirSim_UAV_Inspection_Baseline/
 
 ## 演示视频
 
+#### 1. 跟随视角
+
+<video controls width="800">
+  <source src="https://qincheng0928.github.io/ProjectAirSim_UAV_Inspection_Baseline//docs/videos/chase_camera_demo.mp4" type="video/mp4">
+  Chase Camera
+</video>
+
+#### 2. 前向视角
+
+<video controls width="800">
+  <source src="https://qincheng0928.github.io/ProjectAirSim_UAV_Inspection_Baseline//docs/videos/front_camera_demo.mp4" type="video/mp4">
+  Front Camera
+</video>
+
+#### 3. 深度相机视角
+
+<video controls width="800">
+  <source src="https://qincheng0928.github.io/ProjectAirSim_UAV_Inspection_Baseline//docs/videos/depth_camera_demo.mp4" type="video/mp4">
+  Depth Camera
+</video>
+
+
+
+
+
