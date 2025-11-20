@@ -3,7 +3,7 @@
 <h4 align="center">
     <p>
         <b>English</b> | 
-        <a href="https://github.com/QinCheng0928/ProjectAirSim_UAV_Inspection_Baseline/blob/main/docs/README.md">简体中文</a>
+        <a href="https://github.com/QinCheng0928/ProjectAirSim_UAV_Inspection_Baseline/blob/main/docs/README_zh.md">简体中文</a>
     </p>
 </h4>
 
@@ -57,7 +57,6 @@ ProjectAirSim_UAV_Inspection_Baseline/
   <source src="https://qincheng0928.github.io/ProjectAirSim_UAV_Inspection_Baseline//docs/videos/depth_camera_demo.mp4" type="video/mp4">
   Depth Camera
 </video>
-
 
 
 
