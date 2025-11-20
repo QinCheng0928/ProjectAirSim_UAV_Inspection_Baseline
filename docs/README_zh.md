@@ -49,7 +49,7 @@ ProjectAirSim_UAV_Inspection_Baseline/
 
 #### 3. 深度相机视角
 
-[![Depth Camera](E:\ProjectAirSim_UAV_Inspection_Baseline\docs\images\depth_camera_demo.png)](https://qincheng0928.github.io/ProjectAirSim_UAV_Inspection_Baseline//docs/videos/depth_camera_demo.mp4)
+[![Depth Camera](images/depth_camera_demo.png)](https://qincheng0928.github.io/ProjectAirSim_UAV_Inspection_Baseline//docs/videos/depth_camera_demo.mp4)
 
 
 
