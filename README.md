@@ -53,14 +53,6 @@ ProjectAirSim_UAV_Inspection_Baseline/
 
 
 
-<video src="https://github.com/user-attachments/assets/dc365325-430c-44dd-8c97-84ce67fc455a" type="video/mp4" width="80%" controls>
-    
-</video>
-
-
-
-
-
 
 
 
