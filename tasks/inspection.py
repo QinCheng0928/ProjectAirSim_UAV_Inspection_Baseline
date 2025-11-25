@@ -13,7 +13,7 @@ from components.collision_handler import CollisionHandler
 from config.settings import (MOVE_VELOCITY, TARGET_DISTANCE_THRESHOLD, 
                            CHANGE_DIRECTION_DISTANCE_THRESHOLD, SMOOTHING_FACTOR)
 
-class InspectionManager:
+class Inspection:
     def __init__(self, scene_file="scene_drone_classic.jsonc", start_intersection="J",
                  display_images=True, save_images=False):
         self.client = ProjectAirSimClient()
@@ -47,6 +47,7 @@ class InspectionManager:
         self.update_cur_position()
         self.from_position = self.cur_position
         self.target_id = self.roadnetwork.random_neighbor(start_intersection)
+        self.target_id = "D"
         if self.target_id is None:
             raise RuntimeError(f"No neighbor found for start node {start_intersection}")
         coords = self.roadnetwork.coords(self.target_id)
