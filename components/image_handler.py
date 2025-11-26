@@ -7,13 +7,13 @@ from projectairsim.image_utils import ImageDisplay
 from config.settings import SAVE_PATH, VIDEO_FPS, SUBWIN_WIDTH, SUBWIN_HEIGHT
 
 class ImageHandler:
-    def __init__(self, client, display_enabled=True, save_enabled=False):
+    def __init__(self, client, num_subwim=3, display_enabled=True, save_enabled=False):
         self.client = client
         self.display_enabled = display_enabled
         self.save_enabled = save_enabled
 
         self.image_display = ImageDisplay(
-            num_subwin=3,
+            num_subwin=num_subwim,
             screen_res_x=2560,
             screen_res_y=1440,
             subwin_width=SUBWIN_WIDTH,
@@ -29,7 +29,7 @@ class ImageHandler:
     def stop(self):
         if self.display_enabled:
             self.image_display.stop()
-        self._close_writers()
+        self.close_writers()
 
     def register_window(self, name, subwin_idx):
         self.image_display.add_image(name, subwin_idx=subwin_idx, 
@@ -81,7 +81,7 @@ class ImageHandler:
         projectairsim_log().info(f"Created video writer for {topic_name}: {video_path}")
         return writer
 
-    def _close_writers(self):
+    def close_writers(self):
         for name, writer in list(self.video_writers.items()):
             if writer is not None:
                 writer.release()

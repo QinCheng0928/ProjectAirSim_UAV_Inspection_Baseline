@@ -7,7 +7,7 @@ SAVE_PATH = os.path.join(ROOT_DIR, "media")
 # ========== Drone Config ==========
 DEFAULT_Z = -4.0
 MOVE_VELOCITY = 1.0
-TARGET_DISTANCE_THRESHOLD = 5.0  # meters
+TARGET_DISTANCE_THRESHOLD = 0.5  # meters
 CHANGE_DIRECTION_DISTANCE_THRESHOLD = 10000  # mm
 
 # ========== Image Config ==========

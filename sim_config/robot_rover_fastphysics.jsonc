@@ -264,8 +264,8 @@
           "width": 1280,
           "height": 720,
           "fov-degrees": 90,
-          "capture-enabled": false,
-          "streaming-enabled": true,
+          "capture-enabled": true,
+          "streaming-enabled": false,
           "pixels-as-float": false,
           "compress": false,
           "target-gamma": 2.5

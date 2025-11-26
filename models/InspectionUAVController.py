@@ -1,30 +1,31 @@
-import asyncio
 import math
 import numpy as np
-import cv2
-from projectairsim import ProjectAirSimClient, Drone, World
+from projectairsim import Drone
 from projectairsim.utils import projectairsim_log, quaternion_to_rpy, unpack_image
 from projectairsim.drone import YawControlMode
 from projectairsim.types import ImageType
 
 from models.roadnetwork import RoadNetwork
-from components.image_handler import ImageHandler
 from components.collision_handler import CollisionHandler
 from config.settings import (MOVE_VELOCITY, TARGET_DISTANCE_THRESHOLD, 
                            CHANGE_DIRECTION_DISTANCE_THRESHOLD, SMOOTHING_FACTOR)
 
-class Inspection:
-    def __init__(self, scene_file="scene_drone_classic.jsonc", start_intersection="J",
-                 display_images=True, save_images=False):
-        self.client = ProjectAirSimClient()
-        self.client.connect()
-        self.world = World(self.client, scene_file, delay_after_load_sec=2)
-        self.drone = Drone(self.client, self.world, "Drone1")
+class InspectionUAVController:
+    def __init__(
+            self, 
+            client, 
+            world,
+            image_handler,
+            name = "Drone1",
+            start_intersection="J",
+            ):
+        self.client = client
+        self.world = world
+        self.drone = Drone(self.client, self.world, name)
         self.drone.enable_api_control()
         self.drone.arm()
 
-        self.image_handler = ImageHandler(self.client, display_enabled=display_images, 
-                                        save_enabled=save_images)
+        self.image_handler = image_handler
         self.collision_state = CollisionHandler()
 
         # road network and navigation
@@ -74,9 +75,6 @@ class Inspection:
             self.drone.robot_info["collision_info"],
             lambda topic, msg: self.collision_state.collision_callback(True)
         )
-
-        # start the image display if needed
-        self.image_handler.start()
 
     def update_cur_position(self):
         kinematics = self.drone.get_ground_truth_kinematics()
@@ -171,33 +169,8 @@ class Inspection:
         projectairsim_log().info("One step forward in step simulation.")
         self.update_cur_position()
 
-    async def run(self):
-        try:
-            projectairsim_log().info("Starting takeoff...")
-            takeoff_task = await self.drone.takeoff_async()
-            await takeoff_task
-            projectairsim_log().info("Take off completed.")
-            self.update_cur_position()
-
-            while not self.collision_state.collision:
-                await self.step()
-                self.update_cur_position()
-                if self.has_arrived():
-                    self.update_from_and_to_position()
-                    projectairsim_log().info(f"New target intersection ID: {self.target_id}, coordinates: {self.to_position}")
-        except KeyboardInterrupt:
-            projectairsim_log().info("Interrupted by user, shutting down.")
-        finally:
-            projectairsim_log().info("Starting Land...")
-            land_task = await self.drone.land_async()
-            await land_task
-            projectairsim_log().info("Land completed.")
-            self.shutdown()
-
     def shutdown(self):
         """Clean up resources: stop image handler and disconnect drone client."""
         self.image_handler.stop()
-        self.image_handler._close_writers()
         self.drone.disarm()
         self.drone.disable_api_control()
-        self.client.disconnect()
