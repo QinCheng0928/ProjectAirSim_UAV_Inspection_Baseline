@@ -5,15 +5,17 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SAVE_PATH = os.path.join(ROOT_DIR, "media")
 
 # ========== Drone Config ==========
-DEFAULT_Z = -4.0
+DEFAULT_Z = -2.0
 MOVE_VELOCITY = 1.0
-TARGET_DISTANCE_THRESHOLD = 0.5  # meters
+TARGET_DISTANCE_THRESHOLD = 5.0  # meters
 CHANGE_DIRECTION_DISTANCE_THRESHOLD = 10000  # mm
 
 # ========== Image Config ==========
 VIDEO_FPS = 30
-SUBWIN_WIDTH = 640
-SUBWIN_HEIGHT = 360
+# SUBWIN_WIDTH = 640
+# SUBWIN_HEIGHT = 360
+SUBWIN_WIDTH = 400
+SUBWIN_HEIGHT = 225
 SMOOTHING_FACTOR = 0.1
 
 # ========== Road Network Coordinates ==========

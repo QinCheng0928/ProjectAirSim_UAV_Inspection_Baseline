@@ -9,6 +9,7 @@ from models.roadnetwork import RoadNetwork
 from components.collision_handler import CollisionHandler
 from config.settings import (MOVE_VELOCITY, TARGET_DISTANCE_THRESHOLD, 
                            CHANGE_DIRECTION_DISTANCE_THRESHOLD, SMOOTHING_FACTOR)
+import time
 
 class InspectionUAVController:
     def __init__(
@@ -37,20 +38,22 @@ class InspectionUAVController:
         self.prev_v_north = 0.0
         self.prev_v_east = 0.0
         self.smoothing_factor = SMOOTHING_FACTOR
+        self._last_kinematics_time = 0.0
 
         # positions and targets
-        self._init_positions(start_intersection)
+        self.cur_id = start_intersection
+        self._init_positions()
 
         # setup subscriptions and displays
         self._setup_subscriptions()
 
-    def _init_positions(self, start_intersection):
+    def _init_positions(self):
         self.update_cur_position()
         self.from_position = self.cur_position
-        self.target_id = self.roadnetwork.random_neighbor(start_intersection)
+        self.target_id = self.roadnetwork.random_neighbor(self.cur_id)
         self.target_id = "D"
         if self.target_id is None:
-            raise RuntimeError(f"No neighbor found for start node {start_intersection}")
+            raise RuntimeError(f"No neighbor found for start node {self.cur_id}")
         coords = self.roadnetwork.coords(self.target_id)
         if coords is None:
             raise RuntimeError(f"Coordinates for {self.target_id} not found")
@@ -77,23 +80,26 @@ class InspectionUAVController:
         )
 
     def update_cur_position(self):
-        kinematics = self.drone.get_ground_truth_kinematics()
-        pos = kinematics['pose']['position']
+        self.kinematics = self.drone.get_ground_truth_kinematics()
+        pos = self.kinematics['pose']['position']
         self.cur_position = (pos['x'], pos['y'], pos['z'])
 
     def update_from_and_to_position(self):
         self.from_position = self.cur_position
         next_target = self.roadnetwork.random_neighbor(self.target_id)
-        if next_target is None:
-            projectairsim_log().warning("No further neighbors from current target; staying at current target.")
-            return
+        while next_target == self.cur_id:
+            next_target = self.roadnetwork.random_neighbor(self.target_id)
+            if next_target is None:
+                projectairsim_log().warning("No further neighbors from current target; staying at current target.")
+                return
+        self.cur_id = self.target_id
         self.target_id = next_target
+        self.target_id = "E"
         self.to_position = self.roadnetwork.coords(self.target_id)
+        projectairsim_log().info(f"New target intersection ID: {self.target_id}, coordinates: {self.to_position}")
 
     def has_arrived(self):
-        kinematics = self.drone.get_ground_truth_kinematics()
-        pos = kinematics['pose']['position']
-        current_pos = np.array([pos['x'], pos['y'], pos['z']])
+        current_pos = np.array(self.cur_position)
         target_pos = np.array(self.to_position)
         distance = np.linalg.norm(current_pos - target_pos)
         return distance < self.target_distance_threshold
@@ -133,8 +139,7 @@ class InspectionUAVController:
             angle_per_band = (math.pi / 2) / num_bands
             angle_offset = (safe_index - center_index) * angle_per_band
 
-            kinematics = self.drone.get_ground_truth_kinematics()
-            orientation = kinematics['pose']['orientation']
+            orientation = self.kinematics['pose']['orientation']
             roll, pitch, yaw = quaternion_to_rpy(orientation["w"], orientation["x"], 
                                                orientation["y"], orientation["z"])
             abs_yaw = yaw + angle_offset
@@ -166,11 +171,10 @@ class InspectionUAVController:
         v_north, v_east, z = self._compute_obstacle_avoidance()
         task = self.drone.move_by_velocity_z_async(v_north, v_east, z, 1, yaw_control_mode=YawControlMode.ForwardOnly, yaw_is_rate=False, yaw=0)
         await task
-        projectairsim_log().info("One step forward in step simulation.")
         self.update_cur_position()
 
     def shutdown(self):
         """Clean up resources: stop image handler and disconnect drone client."""
-        self.image_handler.stop()
+        self.drone.cancel_last_task()
         self.drone.disarm()
         self.drone.disable_api_control()

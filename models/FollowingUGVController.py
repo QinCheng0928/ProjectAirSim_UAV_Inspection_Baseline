@@ -1,6 +1,6 @@
 import math
 from projectairsim import Rover
-from projectairsim.utils import projectairsim_log, quaternion_to_rpy
+from projectairsim.utils import projectairsim_log
 from config.settings import MOVE_VELOCITY, SMOOTHING_FACTOR
 
 class FollowingUGVControll:
@@ -23,7 +23,7 @@ class FollowingUGVControll:
 
         self.image_handler = image_handler
         # setup subscriptions and displays
-        self._setup_subscriptions()
+        # self._setup_subscriptions()
 
         self.followed_UAV=followed_UAV
         projectairsim_log().info("Rover init completed.")
@@ -45,16 +45,18 @@ class FollowingUGVControll:
         dx = to_x - cur_x
         dy = to_y - cur_y
         
-        heading = math.pi/2 - math.atan2(dy, dx)
+        heading = math.atan2(dy, dx)
 
         self.heading = self.prev_heading * (1 - SMOOTHING_FACTOR) + heading * SMOOTHING_FACTOR
         self.prev_heading = self.heading
 
     async def step(self):
         self._compute_heading()
-        task = self.rover.move_by_heading_async(self.heading, MOVE_VELOCITY)
+        task = self.rover.move_by_heading_async(heading=self.heading, speed=MOVE_VELOCITY / 50, duration=1)
         await task
 
+
     def shutdown(self):
+        self.rover.cancel_last_task()
         self.rover.disarm()
         self.rover.disable_api_control()

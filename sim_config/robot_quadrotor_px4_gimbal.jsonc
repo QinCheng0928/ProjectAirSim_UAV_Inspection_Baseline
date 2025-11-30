@@ -444,10 +444,8 @@
       "capture-settings": [
         {
           "image-type": 0,
-          // "width": 256,
-          // "height": 144,
-          "width": 1280,
-          "height": 720,
+          "width": 256,
+          "height": 144,
           "fov-degrees": 90,
           "capture-enabled": true,
           "streaming-enabled": false,
@@ -457,10 +455,8 @@
         },
         {
           "image-type": 1,
-          // "width": 256,
-          // "height": 144,
-          "width": 1280,
-          "height": 720,
+          "width": 256,
+          "height": 144,
           "fov-degrees": 90,
           "capture-enabled": true,
           "streaming-enabled": false,
