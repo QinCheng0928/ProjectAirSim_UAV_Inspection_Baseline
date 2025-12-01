@@ -9,9 +9,9 @@ from models.Manager import Manager
 def main():
     manager = Manager(
         following_UAV_flag=True,
-        following_UGV_flag=False,
+        following_UGV_flag=True,
         display_images=True, 
-        save_images=False
+        save_images=True
     )
     asyncio.run(manager.run())
 

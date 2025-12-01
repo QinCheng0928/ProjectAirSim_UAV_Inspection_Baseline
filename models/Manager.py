@@ -75,6 +75,7 @@ class Manager:
             tasks.append(takeoff_task)
         if tasks:
             await asyncio.gather(*tasks)
+            await asyncio.sleep(1.0)
             projectairsim_log().info("Take off completed.")
 
         # start the image display if needed
@@ -93,8 +94,10 @@ class Manager:
             brake_task = brake_rover(self.following_UGV.rover)
             tasks.append(brake_task)
         if tasks:
-            await asyncio.gather(*tasks)
-            projectairsim_log().info("Land and Brake completed.")
+            results = await asyncio.gather(*tasks)
+            for result in results[:-1]:
+                await result
+        projectairsim_log().info("Land and Brake completed.")
 
         self.inspection_UAV.shutdown()  
         if self.following_UAV is not None: 
@@ -142,7 +145,7 @@ class Manager:
         except KeyboardInterrupt:
             projectairsim_log().info("Interrupted by user, shutting down.")
         finally:
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.0)
             await self.shutdown()
             self.image_handler.stop()
             self.client.disconnect()
